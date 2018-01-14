@@ -26,14 +26,12 @@ void Paddle::handleEvent (SDL_Event& e) {
             case SDLK_DOWN: mVelY -= VELOCITY; break;
         }
     }
-
-    printf ("X: %d, Y: %d\n", mVelX, mVelY);
 }
 
-void Paddle::move () {
+void Paddle::move (Uint32 delta_ticks) {
 
     //Move the dot up or down
-    mPosY += mVelY;
+    mPosY += mVelY * (delta_ticks / 1000.f);
 
     //If the dot went too far up or down
     if ((mPosY < 0) || (mPosY + WIDTH > Game::SCREEN_HEIGHT)) {

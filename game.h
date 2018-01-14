@@ -11,6 +11,8 @@ class Game {
 public:
     static const int SCREEN_WIDTH = 640;
     static const int SCREEN_HEIGHT = 480;
+    const int SCREEN_FPS = 60;
+    const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
 
     SDL_Window* game_window = NULL;
     SDL_Renderer* game_renderer = NULL;

@@ -11,13 +11,13 @@ class Paddle {
 public:
     static const int WIDTH = 20;
     static const int HEIGHT = 60;
-    static const int VELOCITY = 1;
+    static const int VELOCITY = 500;
 
     // Init variables
     Paddle (int x_coord);
 
     void handleEvent (SDL_Event& e);
-    void move ();
+    void move (Uint32 delta_ticks);
     void render (SDL_Renderer* renderer);
 
 private:

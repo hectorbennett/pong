@@ -11,17 +11,17 @@ class Ball {
 public:
     static const int WIDTH = 10;
     static const int HEIGHT = 10;
-    static const int VELOCITY = 1;
+    static const int VELOCITY = 200;
 
     // Init variables
     Ball ();
 
-    void move ();
+    void move (Uint32 delta_ticks);
     void render (SDL_Renderer* renderer);
 
 private:
-    int mPosX, mPosY;
-    int mVelX, mVelY;
+    float mPosX, mPosY;
+    float mVelX, mVelY;
 };
  
 // This is the end of the header guard

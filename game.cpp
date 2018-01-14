@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include "main.h"
 #include "game.h"
+#include "timer.h"
 #include "paddle.h"
 #include "ball.h"
 
@@ -72,11 +73,21 @@ void Game::run () {
     // Event handler
     SDL_Event e;
 
+    Timer fps_timer;
+    Timer cap_timer;
+    Timer delta;
+    int frame_count = 0;
+    fps_timer.start();
+    delta.start();
+
     Paddle* left_paddle = new Paddle(100);
     Paddle* right_paddle = new Paddle(SCREEN_WIDTH -100);
     Ball* ball = new Ball();
 
     while (!quit) {
+
+        cap_timer.start();
+
         // Handle events on queue
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
@@ -87,9 +98,21 @@ void Game::run () {
             right_paddle -> handleEvent(e);
         }
 
-        left_paddle -> move();
-        right_paddle -> move();
-        ball -> move();
+        printf("frame_count: %d\n", frame_count);
+
+        int ticks = fps_timer.getTicks();
+        int delta_ticks = delta.getTicks();
+
+        // Calculate and correct fps
+        float avg_fps = frame_count / (ticks / 1000.f);
+
+        printf("FPS: %f\n", avg_fps);
+
+        left_paddle -> move(delta_ticks);
+        right_paddle -> move(delta_ticks);
+        ball -> move(delta_ticks);
+
+        delta.start();
 
         //Clear screen
         SDL_SetRenderDrawColor(game_renderer, 0, 0, 0, 255);
@@ -101,6 +124,13 @@ void Game::run () {
 
         //Update screen
         SDL_RenderPresent(game_renderer);
+        ++frame_count;
+
+        int frame_ticks = cap_timer.getTicks();
+        if (frame_ticks < SCREEN_TICK_PER_FRAME) {
+            // wait
+            SDL_Delay(SCREEN_TICK_PER_FRAME - frame_ticks);
+        }
     }
 
     delete left_paddle;

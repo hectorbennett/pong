@@ -7,13 +7,13 @@ Ball::Ball () {
     mPosX = Game::SCREEN_WIDTH / 2;
     mPosY = Game::SCREEN_HEIGHT / 2;
 
-    mVelX = 1;
-    mVelY = 1;
+    mVelX = VELOCITY;
+    mVelY = VELOCITY;
 }
 
-void Ball::move () {
-    mPosY += mVelY;
-    mPosX += mVelX;
+void Ball::move (Uint32 delta_ticks) {
+    mPosY += mVelY * (delta_ticks / 1000.f);
+    mPosX += mVelX * (delta_ticks / 1000.f);
 
     if ((mPosY < 0) || (mPosY + HEIGHT > Game::SCREEN_HEIGHT)) {
         mVelY = -mVelY;
