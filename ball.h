@@ -1,22 +1,21 @@
 // This is start of the header guard.  ADD_H can be any unique name. 
 // By convention, we use the name of the header file.
-#ifndef PADDLE_H
-#define PADDLE_H
+#ifndef BALL_H
+#define BALL_H
 
 #include <SDL2/SDL.h>
 #include "game.h"
  
 // This is the content of the .h file, which is where the declarations go
-class Paddle {
+class Ball {
 public:
-    static const int WIDTH = 20;
-    static const int HEIGHT = 60;
+    static const int WIDTH = 10;
+    static const int HEIGHT = 10;
     static const int VELOCITY = 1;
 
     // Init variables
-    Paddle (int x_coord);
+    Ball ();
 
-    void handleEvent (SDL_Event& e);
     void move ();
     void render (SDL_Renderer* renderer);
 

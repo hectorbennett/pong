@@ -1,12 +1,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "main.h"
 #include "game.h"
 #include "paddle.h"
 
-Paddle::Paddle () {
+Paddle::Paddle (int x_coordinate) {
     //Initialize the offsets
-    mPosX = 0;
+    mPosX = x_coordinate;
     mPosY = 0;
 
     //Initialize the velocity
@@ -19,16 +18,12 @@ void Paddle::handleEvent (SDL_Event& e) {
         switch(e.key.keysym.sym) {
             case SDLK_UP: mVelY -= VELOCITY; break;
             case SDLK_DOWN: mVelY += VELOCITY; break;
-            case SDLK_LEFT: mVelX -= VELOCITY; break;
-            case SDLK_RIGHT: mVelX += VELOCITY; break;
         }
     } else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
         //Adjust the velocity
         switch(e.key.keysym.sym) {
             case SDLK_UP: mVelY += VELOCITY; break;
             case SDLK_DOWN: mVelY -= VELOCITY; break;
-            case SDLK_LEFT: mVelX += VELOCITY; break;
-            case SDLK_RIGHT: mVelX -= VELOCITY; break;
         }
     }
 
@@ -36,14 +31,6 @@ void Paddle::handleEvent (SDL_Event& e) {
 }
 
 void Paddle::move () {
-    //Move the dot left or right
-    mPosX += mVelX;
-    
-    //If the dot went too far to the left or right
-    if ((mPosX < 0) || (mPosX + WIDTH > Game::SCREEN_WIDTH)) {
-        //Move back
-        mPosX -= mVelX;
-    }
 
     //Move the dot up or down
     mPosY += mVelY;
@@ -59,8 +46,8 @@ void Paddle::render (SDL_Renderer* renderer) {
     //Render red filled quad
     SDL_Rect rect;
 
-    rect.x = mPosX;
-    rect.y = mPosY;
+    rect.x = mPosX - (WIDTH / 2);
+    rect.y = mPosY - (HEIGHT / 2);
     rect.w = WIDTH;
     rect.h = HEIGHT;
 

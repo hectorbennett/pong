@@ -3,6 +3,7 @@
 #include "main.h"
 #include "game.h"
 #include "paddle.h"
+#include "ball.h"
 
 bool Game::init () {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -45,7 +46,6 @@ bool Game::init () {
     return true;
 }
 
-
 void Game::close () {
     // Destroy window	
 	SDL_DestroyRenderer(game_renderer);
@@ -72,7 +72,9 @@ void Game::run () {
     // Event handler
     SDL_Event e;
 
-    Paddle paddle;
+    Paddle* left_paddle = new Paddle(100);
+    Paddle* right_paddle = new Paddle(SCREEN_WIDTH -100);
+    Ball* ball = new Ball();
 
     while (!quit) {
         // Handle events on queue
@@ -81,20 +83,28 @@ void Game::run () {
                 quit = true;
             }
 
-            paddle.handleEvent(e);
+            left_paddle -> handleEvent(e);
+            right_paddle -> handleEvent(e);
         }
 
-        paddle.move();
+        left_paddle -> move();
+        right_paddle -> move();
+        ball -> move();
 
         //Clear screen
         SDL_SetRenderDrawColor(game_renderer, 0, 0, 0, 255);
         SDL_RenderClear(game_renderer);
 
-        paddle.render(game_renderer);
+        left_paddle -> render(game_renderer);
+        right_paddle -> render(game_renderer);
+        ball -> render(game_renderer);
 
         //Update screen
         SDL_RenderPresent(game_renderer);
     }
 
+    delete left_paddle;
+    delete right_paddle;
+    delete ball;
     close();
 }
